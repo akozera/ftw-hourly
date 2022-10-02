@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { BookingCleaningForm, BookingCleaningFormExtended } from '../../forms';
 import { FormattedMessage } from '../../util/reactIntl';
+import { calculateCleaningTimeMinutes, calculateCleaningTimeHours } from '../../util/abFunctions';
 
 import StaticPage from '../../containers/StaticPage/StaticPage';
 
@@ -41,23 +42,32 @@ class CleaningBookingPage extends Component {
         cabinets: false,
         laundry: false,
       },
+      cleaningTimeEstimate: 0,
     };
-    this.enterInitialInfo = this.enterInitialInfo.bind(this);
+    this.processInitialInfo = this.processInitialInfo.bind(this);
     this.enterFrequencyInfo = this.enterFrequencyInfo.bind(this);
   }
 
-  enterInitialInfo(infoFromStep1) {
+  processInitialInfo(infoFromStep1) {
     this.setState({ initialInfo: infoFromStep1, initialStage: false });
+
+    //Calculate the cleaning time
+    let cleaningTimeEstimate = calculateCleaningTimeMinutes(
+      infoFromStep1.numBedrooms,
+      infoFromStep1.numBathrooms,
+      this.state.additionalServices
+    );
+    console.log('CLEANING EST IS');
+    console.log(cleaningTimeEstimate);
+    this.setState({ cleaningTimeEstimate: cleaningTimeEstimate });
+    return cleaningTimeEstimate;
   }
 
   enterFrequencyInfo(freq) {
     this.setState({ frequency: freq });
   }
+
   render() {
-    // sdk.listings.query({}).then(res => {
-    //   // res.data contains the response data
-    //   console.log(res);
-    // });
     return (
       <StaticPage
         className={css.root}
@@ -75,7 +85,8 @@ class CleaningBookingPage extends Component {
               <BookingCleaningForm
                 onBookingSearchListings={this.props.onBookingSearchListings}
                 onBookingSearchAllListings={this.props.onBookingSearchAllListings}
-                enterInitialInfo={this.enterInitialInfo}
+                processInitialInfo={this.processInitialInfo}
+                cleaningTimeEstimate={this.state.cleaningTimeEstimate}
               />
             </div>
           </div>
@@ -101,7 +112,8 @@ class CleaningBookingPage extends Component {
                 </div>
                 <div>
                   <FontAwesomeIcon icon={faCalendar} /> {this.state.initialInfo.date},{' '}
-                  {this.state.initialInfo.time}
+                  {this.state.initialInfo.time} <br></br>
+                  {calculateCleaningTimeHours(this.state.cleaningTimeEstimate)} hours
                 </div>
                 <div>
                   <FontAwesomeIcon icon={faRotate} /> {this.state.frequency}

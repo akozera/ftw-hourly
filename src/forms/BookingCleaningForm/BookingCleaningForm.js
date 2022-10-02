@@ -23,32 +23,24 @@ class BookingCleaningForm extends Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.handleClick = this.handleClick.bind(this);
   }
-  // handleClick(evt) {
-  //   console.log('Inside click');
-  //   evt.preventDefault();
-  //   this.props
-  //     .onBookingSearchListings({
-  //       // perPage: 100,
-  //       startTime: formatStartTimestampForSearch(this.state.date, this.state.time),
-  //       minDuration: 60,
-  //     })
-  //     .then(data => console.log(data));
-  // }
+
   handleChange(evt) {
     this.setState({ [evt.target.name]: evt.target.value });
   }
+
   handleSubmit(evt) {
     evt.preventDefault();
     // Update the state with the info from the initial form
-    this.props.enterInitialInfo(this.state);
+    let cleaningTimeEstimate = this.props.processInitialInfo(this.state);
     // Search listings
+    console.log('Search listings');
+    console.log(cleaningTimeEstimate);
     this.props
       .onBookingSearchListings({
         // perPage: 100,
         startTime: formatStartTimestampForSearch(this.state.date, this.state.time),
-        minDuration: 60,
+        minDuration: cleaningTimeEstimate,
       })
       .then(data => console.log(data));
     // Reset the state
@@ -65,7 +57,6 @@ class BookingCleaningForm extends Component {
   }
 
   render() {
-    console.log(new Date(this.state.date).toISOString());
     const { rootClassName, className, services } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 

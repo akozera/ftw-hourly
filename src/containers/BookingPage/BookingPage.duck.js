@@ -145,7 +145,9 @@ export const bookingSearchListings = bookingSearchParams => (dispatch, getState,
     const hasDateValues = startTime ? true : false;
     const startTimeDate = new Date(startTime);
     const endTime = hasDateValues
-      ? new Date(startTimeDate.setDate(startTimeDate.getDate() + 1)).toISOString()
+      ? new Date(
+          startTimeDate.setMinutes(startTimeDate.getMinutes() + minDurationParam + 1)
+        ).toISOString()
       : null;
 
     const minDurationMaybe =

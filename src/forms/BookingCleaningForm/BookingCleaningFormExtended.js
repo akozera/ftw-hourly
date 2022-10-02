@@ -19,22 +19,13 @@ class BookingCleaningFormExtended extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleChange(evt) {
-    // document.getElementById(evt.target.id).classList.add('buttonActive');
     this.setState({ [evt.target.name]: evt.target.value });
     this.props.enterFrequencyInfo(evt.target.value);
   }
   handleSubmit(evt) {
     evt.preventDefault();
-    this.props.enterInitialInfo(this.state);
     this.setState({
-      numBedrooms: '',
-      numBathrooms: '',
-      date: moment(new Date())
-        .add(1, 'd')
-        .format('YYYY-MM-DD'),
-      time: '08:00',
-      postcode: '',
-      email: '',
+      frequency: 'Bi-weekly',
     });
   }
 
