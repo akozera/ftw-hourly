@@ -47,7 +47,7 @@ class CleaningBookingPage extends Component {
     };
     this.processInitialInfo = this.processInitialInfo.bind(this);
     this.enterFrequencyInfo = this.enterFrequencyInfo.bind(this);
-    this.enterAdditionalServicesInfo = this.enterAdditionalServicesInfo.bind(this);
+    this.processAdditionalServicesInfo = this.processAdditionalServicesInfo.bind(this);
   }
 
   processInitialInfo(infoFromStep1) {
@@ -59,8 +59,7 @@ class CleaningBookingPage extends Component {
       infoFromStep1.numBathrooms,
       this.state.additionalServices
     );
-    console.log('CLEANING EST IS');
-    console.log(cleaningTimeEstimate);
+
     this.setState({ cleaningTimeEstimate: cleaningTimeEstimate });
     return cleaningTimeEstimate;
   }
@@ -69,7 +68,7 @@ class CleaningBookingPage extends Component {
     this.setState({ frequency: freq });
   }
 
-  enterAdditionalServicesInfo(item) {
+  processAdditionalServicesInfo(item) {
     let newAdditionalServices = {
       ...this.state.additionalServices,
       [item]: !this.state.additionalServices[[item]],
@@ -77,27 +76,24 @@ class CleaningBookingPage extends Component {
     this.setState({
       additionalServices: newAdditionalServices,
     });
+
     //Calculate the cleaning time
     let cleaningTimeEstimate = calculateCleaningTimeMinutes(
       this.state.initialInfo.numBedrooms,
       this.state.initialInfo.numBathrooms,
       newAdditionalServices
     );
-    console.log('CLEANING EST ADD SERVICES IS');
-    console.log(cleaningTimeEstimate);
+
     this.setState({ cleaningTimeEstimate: cleaningTimeEstimate });
 
-    console.log('Search listings ADD SERVICES');
-    this.props
-      .onBookingSearchListings({
-        // perPage: 100,
-        startTime: formatStartTimestampForSearch(
-          this.state.initialInfo.date,
-          this.state.initialInfo.time
-        ),
-        minDuration: cleaningTimeEstimate,
-      })
-      .then(data => console.log(data));
+    this.props.onBookingSearchListings({
+      startTime: formatStartTimestampForSearch(
+        this.state.initialInfo.date,
+        this.state.initialInfo.time
+      ),
+      minDuration: cleaningTimeEstimate,
+    });
+    // .then(data => console.log(data));
   }
 
   render() {
@@ -130,7 +126,7 @@ class CleaningBookingPage extends Component {
                 selectedFrequency={this.state.frequency}
                 enterFrequencyInfo={this.enterFrequencyInfo}
                 additionalServices={this.state.additionalServices}
-                enterAdditionalServicesInfo={this.enterAdditionalServicesInfo}
+                processAdditionalServicesInfo={this.processAdditionalServicesInfo}
                 availableListings={this.props.availableListings}
               />
             </div>
@@ -143,7 +139,7 @@ class CleaningBookingPage extends Component {
                   </p>
                   <p id="cleaningBookingPageSmallDetails">
                     {this.state.initialInfo.numBedrooms || 0} bed,
-                    {' ' + this.state.initialInfo.numBathrooms || 0} bath
+                    {this.state.initialInfo.numBathrooms || 0} bath
                   </p>
                 </div>
                 <div>

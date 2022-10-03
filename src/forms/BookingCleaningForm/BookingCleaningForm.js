@@ -33,9 +33,8 @@ class BookingCleaningForm extends Component {
     evt.preventDefault();
     // Update the state with the info from the initial form
     let cleaningTimeEstimate = this.props.processInitialInfo(this.state);
+
     // Search listings
-    console.log('Search listings');
-    console.log(cleaningTimeEstimate);
     this.props
       .onBookingSearchListings({
         // perPage: 100,
@@ -43,6 +42,7 @@ class BookingCleaningForm extends Component {
         minDuration: cleaningTimeEstimate,
       })
       .then(data => console.log(data));
+
     // Reset the state
     this.setState({
       numBedrooms: '',
@@ -68,7 +68,6 @@ class BookingCleaningForm extends Component {
         <h1>
           <FormattedMessage id="BookingCleaningForm.title" />
         </h1>
-        {/* <button onClick={this.handleClick}>Click</button> */}
         <form onSubmit={this.handleSubmit} className={css.BookingCleaningFormChild}>
           <div className={css.BookingCleaningFormRow}>
             <div className={css.BookingCleaningFormMultiBlock}>

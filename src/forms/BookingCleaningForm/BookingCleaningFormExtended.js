@@ -7,14 +7,10 @@ import { PrimaryButton } from '../../components';
 import classNames from 'classnames';
 
 import css from './BookingCleaningFormExtended.module.css';
-import { getMonthStartInTimeZone } from '../../util/dates';
 
 class BookingCleaningFormExtended extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   frequency: 'Bi-weekly',
-    // };
     this.handleChange = this.handleChange.bind(this);
     this.handleAdditionalServicesChange = this.handleAdditionalServicesChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -24,13 +20,10 @@ class BookingCleaningFormExtended extends Component {
     this.props.enterFrequencyInfo(evt.target.value);
   }
   handleAdditionalServicesChange(evt) {
-    this.props.enterAdditionalServicesInfo(evt.target.name);
+    this.props.processAdditionalServicesInfo(evt.target.name);
   }
   handleSubmit(evt) {
     evt.preventDefault();
-    // this.setState({
-    //   frequency: 'Bi-weekly',
-    // });
   }
 
   render() {
@@ -42,12 +35,9 @@ class BookingCleaningFormExtended extends Component {
       selectedFrequency,
       additionalServices,
       availableListings,
-      enterFrequencyInfo,
-      enterAdditionalServicesInfo,
     } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
-    // const submitButtonClasses = classNames(submitButtonWrapperClassName || css.submitButtonWrapper);
     const submitButtonClasses = classNames(css.submitButtonWrapper);
 
     return (
@@ -86,10 +76,6 @@ class BookingCleaningFormExtended extends Component {
             <div className={css.BookingCleaningAddonsSection}>
               {Object.keys(additionalServices).map(elem => {
                 return (
-                  // <div key={uuidv4()} onClick={this.handleAdditionalServicesChange}>
-                  //   <div className={css.BookingCleaningAddon}></div>
-                  //   {elem}
-                  // </div>
                   <input
                     className={
                       css.BookingCleaningAddon +
