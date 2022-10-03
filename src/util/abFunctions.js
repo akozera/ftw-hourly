@@ -27,6 +27,10 @@ export const calculateCleaningTimeHours = cleaningTimeEstimateMinutes => {
   return Math.round((cleaningTimeEstimateMinutes / 60) * 100) / 100;
 };
 
+export const calculateCleaningPrice = (price, numHours) => {
+  return price * numHours;
+};
+
 export const createAdditionalServicesString = additionalServices => {
   let filtered = Object.fromEntries(
     Object.entries(additionalServices).filter(([k, v]) => v === true)

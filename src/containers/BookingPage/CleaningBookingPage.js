@@ -17,8 +17,10 @@ import { formatStartTimestampForSearch } from '../../util/dates';
 import {
   calculateCleaningTimeMinutes,
   calculateCleaningTimeHours,
+  calculateCleaningPrice,
   createAdditionalServicesString,
 } from '../../util/abFunctions';
+import config from '../../config';
 
 import StaticPage from '../../containers/StaticPage/StaticPage';
 
@@ -165,7 +167,14 @@ class CleaningBookingPage extends Component {
                   <FontAwesomeIcon icon={faCircleCheck} /> Cancel Anytime
                 </div>
                 <div>
-                  <p>Per Cleaning</p>
+                  <p>
+                    Per Cleaning:
+                    {calculateCleaningPrice(
+                      config.pricePerHourCleaning,
+                      calculateCleaningTimeHours(this.state.cleaningTimeEstimate)
+                    )}
+                    PLN
+                  </p>
                   <span></span>
                   <p>Hero Service Fee</p>
                   <span></span>

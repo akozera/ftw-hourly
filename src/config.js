@@ -2,6 +2,7 @@ import * as custom from './marketplace-custom-config.js';
 import defaultLocationSearches from './default-location-searches';
 import { defaultMCC, stripePublishableKey, stripeCountryDetails } from './stripe-config';
 import { currencyConfiguration } from './currency-config';
+import { pricingConfiguration } from './hh-config';
 
 const env = process.env.REACT_APP_ENV;
 const dev = process.env.REACT_APP_ENV === 'development';
@@ -87,6 +88,9 @@ const currencyConfig = currencyConfiguration(currency);
 // Listing minimum price in currency sub units, e.g. cents.
 // 0 means no restriction to the price
 const listingMinimumPriceSubUnits = 0;
+
+// Price per hour of cleaning
+const pricePerHourCleaning = pricingConfiguration()['pricePerHourCleaning'];
 
 // Sentry DSN (Data Source Name), a client key for authenticating calls to Sentry
 const sentryDsn = process.env.REACT_APP_SENTRY_DSN;
@@ -221,6 +225,7 @@ const config = {
   sortSearchByDistance,
   currency,
   currencyConfig,
+  pricePerHourCleaning,
   listingMinimumPriceSubUnits,
   stripe: {
     defaultMCC: defaultMCC,
