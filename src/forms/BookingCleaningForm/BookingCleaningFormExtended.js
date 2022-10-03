@@ -12,21 +12,25 @@ import { getMonthStartInTimeZone } from '../../util/dates';
 class BookingCleaningFormExtended extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      frequency: 'Bi-weekly',
-    };
+    // this.state = {
+    //   frequency: 'Bi-weekly',
+    // };
     this.handleChange = this.handleChange.bind(this);
+    this.handleAdditionalServicesChange = this.handleAdditionalServicesChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleChange(evt) {
-    this.setState({ [evt.target.name]: evt.target.value });
+    // this.setState({ [evt.target.name]: evt.target.value });
     this.props.enterFrequencyInfo(evt.target.value);
+  }
+  handleAdditionalServicesChange(evt) {
+    this.props.enterAdditionalServicesInfo(evt.target.name);
   }
   handleSubmit(evt) {
     evt.preventDefault();
-    this.setState({
-      frequency: 'Bi-weekly',
-    });
+    // this.setState({
+    //   frequency: 'Bi-weekly',
+    // });
   }
 
   render() {
@@ -35,8 +39,11 @@ class BookingCleaningFormExtended extends Component {
       className,
       services,
       frequencies,
+      selectedFrequency,
       additionalServices,
       availableListings,
+      enterFrequencyInfo,
+      enterAdditionalServicesInfo,
     } = this.props;
     const classes = classNames(rootClassName || css.root, className);
 
@@ -57,7 +64,7 @@ class BookingCleaningFormExtended extends Component {
                   <input
                     className={
                       css.BookingCleaningFrequency +
-                      (this.state.frequency === elem ? ' ' + css.ButtonSelected : '')
+                      (selectedFrequency === elem ? ' ' + css.ButtonSelected : '')
                     }
                     key={uuidv4()}
                     type="button"
@@ -77,12 +84,24 @@ class BookingCleaningFormExtended extends Component {
             </p>
 
             <div className={css.BookingCleaningAddonsSection}>
-              {additionalServices.map(elem => {
+              {Object.keys(additionalServices).map(elem => {
                 return (
-                  <div key={uuidv4()}>
-                    <div className={css.BookingCleaningAddon}></div>
-                    {elem}
-                  </div>
+                  // <div key={uuidv4()} onClick={this.handleAdditionalServicesChange}>
+                  //   <div className={css.BookingCleaningAddon}></div>
+                  //   {elem}
+                  // </div>
+                  <input
+                    className={
+                      css.BookingCleaningAddon +
+                      (additionalServices[elem] ? ' ' + css.ButtonSelected : '')
+                    }
+                    key={uuidv4()}
+                    type="button"
+                    id={'button' + elem}
+                    name={elem}
+                    value={elem}
+                    onClick={this.handleAdditionalServicesChange}
+                  />
                 );
               })}
             </div>

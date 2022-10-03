@@ -13,6 +13,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { BookingCleaningForm, BookingCleaningFormExtended } from '../../forms';
 import { FormattedMessage } from '../../util/reactIntl';
+import { formatStartTimestampForSearch } from '../../util/dates';
 import { calculateCleaningTimeMinutes, calculateCleaningTimeHours } from '../../util/abFunctions';
 
 import StaticPage from '../../containers/StaticPage/StaticPage';
@@ -46,6 +47,7 @@ class CleaningBookingPage extends Component {
     };
     this.processInitialInfo = this.processInitialInfo.bind(this);
     this.enterFrequencyInfo = this.enterFrequencyInfo.bind(this);
+    this.enterAdditionalServicesInfo = this.enterAdditionalServicesInfo.bind(this);
   }
 
   processInitialInfo(infoFromStep1) {
@@ -65,6 +67,37 @@ class CleaningBookingPage extends Component {
 
   enterFrequencyInfo(freq) {
     this.setState({ frequency: freq });
+  }
+
+  enterAdditionalServicesInfo(item) {
+    let newAdditionalServices = {
+      ...this.state.additionalServices,
+      [item]: !this.state.additionalServices[[item]],
+    };
+    this.setState({
+      additionalServices: newAdditionalServices,
+    });
+    //Calculate the cleaning time
+    let cleaningTimeEstimate = calculateCleaningTimeMinutes(
+      this.state.initialInfo.numBedrooms,
+      this.state.initialInfo.numBathrooms,
+      newAdditionalServices
+    );
+    console.log('CLEANING EST ADD SERVICES IS');
+    console.log(cleaningTimeEstimate);
+    this.setState({ cleaningTimeEstimate: cleaningTimeEstimate });
+
+    console.log('Search listings ADD SERVICES');
+    this.props
+      .onBookingSearchListings({
+        // perPage: 100,
+        startTime: formatStartTimestampForSearch(
+          this.state.initialInfo.date,
+          this.state.initialInfo.time
+        ),
+        minDuration: cleaningTimeEstimate,
+      })
+      .then(data => console.log(data));
   }
 
   render() {
@@ -94,7 +127,10 @@ class CleaningBookingPage extends Component {
           <div>
             <div className={css.CleaningBookingPageMain}>
               <BookingCleaningFormExtended
+                selectedFrequency={this.state.frequency}
                 enterFrequencyInfo={this.enterFrequencyInfo}
+                additionalServices={this.state.additionalServices}
+                enterAdditionalServicesInfo={this.enterAdditionalServicesInfo}
                 availableListings={this.props.availableListings}
               />
             </div>
