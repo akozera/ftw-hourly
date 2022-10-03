@@ -26,3 +26,10 @@ export const calculateCleaningTimeMinutes = (numBedrooms, numBathrooms, addition
 export const calculateCleaningTimeHours = cleaningTimeEstimateMinutes => {
   return Math.round((cleaningTimeEstimateMinutes / 60) * 100) / 100;
 };
+
+export const createAdditionalServicesString = additionalServices => {
+  let filtered = Object.fromEntries(
+    Object.entries(additionalServices).filter(([k, v]) => v === true)
+  );
+  return '+ ' + Object.keys(filtered).join(', ');
+};

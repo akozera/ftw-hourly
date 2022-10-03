@@ -14,7 +14,11 @@ import {
 import { BookingCleaningForm, BookingCleaningFormExtended } from '../../forms';
 import { FormattedMessage } from '../../util/reactIntl';
 import { formatStartTimestampForSearch } from '../../util/dates';
-import { calculateCleaningTimeMinutes, calculateCleaningTimeHours } from '../../util/abFunctions';
+import {
+  calculateCleaningTimeMinutes,
+  calculateCleaningTimeHours,
+  createAdditionalServicesString,
+} from '../../util/abFunctions';
 
 import StaticPage from '../../containers/StaticPage/StaticPage';
 
@@ -97,6 +101,8 @@ class CleaningBookingPage extends Component {
   }
 
   render() {
+    let hasAdditionalServices =
+      Object.values(this.state.additionalServices).reduce((a, b) => a + b) > 0;
     return (
       <StaticPage
         className={css.root}
@@ -137,10 +143,15 @@ class CleaningBookingPage extends Component {
                   <p>
                     <FontAwesomeIcon icon={faHouse} /> Home Cleaning{' '}
                   </p>
-                  <p id="cleaningBookingPageSmallDetails">
+                  <div id="cleaningBookingPageSmallDetails">
                     {this.state.initialInfo.numBedrooms || 0} bed,{' '}
                     {this.state.initialInfo.numBathrooms || 0} bath
-                  </p>
+                    {hasAdditionalServices ? (
+                      <div>{createAdditionalServicesString(this.state.additionalServices)}</div>
+                    ) : (
+                      ''
+                    )}
+                  </div>
                 </div>
                 <div>
                   <FontAwesomeIcon icon={faCalendar} /> {this.state.initialInfo.date},{' '}
