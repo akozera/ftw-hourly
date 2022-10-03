@@ -138,7 +138,7 @@ class CleaningBookingPage extends Component {
                     <FontAwesomeIcon icon={faHouse} /> Home Cleaning{' '}
                   </p>
                   <p id="cleaningBookingPageSmallDetails">
-                    {this.state.initialInfo.numBedrooms || 0} bed,
+                    {this.state.initialInfo.numBedrooms || 0} bed,{' '}
                     {this.state.initialInfo.numBathrooms || 0} bath
                   </p>
                 </div>
