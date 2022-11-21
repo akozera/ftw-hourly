@@ -3,7 +3,7 @@ import moment from 'moment';
 const { v4: uuidv4 } = require('uuid');
 import { object, string } from 'prop-types';
 import { FormattedMessage } from '../../util/reactIntl';
-import { PrimaryButton } from '../../components';
+import { TimeSlotPicker, PrimaryButton } from '../../components';
 import classNames from 'classnames';
 
 import css from './BookingCleaningFormExtended.module.css';
@@ -31,6 +31,7 @@ class BookingCleaningFormExtended extends Component {
       rootClassName,
       className,
       services,
+      startDate,
       frequencies,
       selectedFrequency,
       additionalServices,
@@ -97,6 +98,7 @@ class BookingCleaningFormExtended extends Component {
               <span className={css.stepTitleNumber}>3</span>
               <FormattedMessage id="BookingCleaningFormExtended.step3" />
             </p>
+            <TimeSlotPicker startDate={startDate} />
             <div>
               Available listings are:
               {availableListings.map(listing => {

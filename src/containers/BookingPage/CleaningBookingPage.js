@@ -135,6 +135,7 @@ class CleaningBookingPage extends Component {
                 enterFrequencyInfo={this.enterFrequencyInfo}
                 additionalServices={this.state.additionalServices}
                 processAdditionalServicesInfo={this.processAdditionalServicesInfo}
+                startDate={this.state.initialInfo.date}
                 availableListings={this.props.availableListings}
               />
             </div>
@@ -168,7 +169,7 @@ class CleaningBookingPage extends Component {
                 </div>
                 <div>
                   <p>
-                    Per Cleaning:
+                    Per Cleaning:{' '}
                     {calculateCleaningPrice(
                       config.pricePerHourCleaning,
                       calculateCleaningTimeHours(this.state.cleaningTimeEstimate)
